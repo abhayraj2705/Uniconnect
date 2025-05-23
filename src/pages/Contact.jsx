@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import API_URL from '../config/api';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -14,10 +15,11 @@ const Contact = () => {
     setStatus({ loading: true, error: null, success: false });
 
     try {
-      const response = await fetch('http://localhost:3000/api/contact', {
+      const response = await fetch(`${API_URL}/api/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
         body: JSON.stringify(formData),
       });
@@ -31,13 +33,13 @@ const Contact = () => {
       setStatus({ loading: false, error: null, success: true });
       setFormData({ name: '', email: '', subject: '', message: '' });
       
-      // Clear success message after 3 seconds
-      setTimeout(() => {
-        setStatus(prev => ({ ...prev, success: false }));
-      }, 3000);
-
     } catch (error) {
-      setStatus({ loading: false, error: error.message, success: false });
+      setStatus({ 
+        loading: false, 
+        error: 'Failed to send message. Please try again later.', 
+        success: false 
+      });
+      console.error('Contact form error:', error);
     }
   };
 

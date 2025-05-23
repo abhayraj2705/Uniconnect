@@ -2,6 +2,7 @@ import express from 'express';
 import EventRegistration from '../models/Events.js';
 import Event from '../models/Event.js';
 import { sendEventRegistrationEmail } from '../utils/emailService.js';
+import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -10,10 +11,15 @@ router.post('/register', async (req, res) => {
   const { userName, userEmail, selectedEvent } = req.body;
 
   try {
+    // Validate input
+    if (!userName || !userEmail || !selectedEvent) {
+      return res.status(400).json({ msg: 'Please provide all required fields' });
+    }
+
     // Check for duplicate registration
     const existing = await EventRegistration.findOne({ userEmail, selectedEvent });
     if (existing) {
-      return res.status(400).json({ msg: 'User already registered for this event' });
+      return res.status(400).json({ msg: 'You are already registered for this event' });
     }
 
     // Get event details
@@ -36,29 +42,29 @@ router.post('/register', async (req, res) => {
       await sendEventRegistrationEmail(userEmail, userName, event);
     } catch (emailError) {
       console.error('Error sending confirmation email:', emailError);
-      // Continue with registration even if email fails
     }
 
     res.status(201).json({
-      msg: 'Registered successfully! Check your email for confirmation.',
+      msg: 'Registration successful! Check your email for confirmation.',
       registration
     });
 
   } catch (err) {
     console.error('Registration error:', err);
     res.status(500).json({ 
-      msg: err.message || 'Error registering for event'
+      msg: err.message || 'Error registering for event' 
     });
   }
 });
 
 // 📌 Get all registrations
-router.get('/all', async (req, res) => {
+router.get('/all', auth, async (req, res) => {
   try {
     const allRegistrations = await EventRegistration.find().sort({ createdAt: -1 });
     res.json(allRegistrations);
   } catch (err) {
-    res.status(500).json({ msg: 'Server error' });
+    console.error('Error fetching registrations:', err);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 

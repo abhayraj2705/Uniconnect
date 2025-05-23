@@ -26,7 +26,8 @@ const EventsManagement = () => {
       setLoading(true);
       const response = await fetch(`${API_URL}/api/events`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Accept': 'application/json'
         }
       });
       
@@ -35,14 +36,8 @@ const EventsManagement = () => {
       }
 
       const data = await response.json();
-      
-      // Ensure data is an array
-      if (Array.isArray(data)) {
-        setEvents(data);
-      } else {
-        setEvents([]);
-        console.error('Expected array of events but got:', data);
-      }
+      setEvents(Array.isArray(data) ? data : []);
+
     } catch (error) {
       console.error('Error fetching events:', error);
       setError(error.message);
@@ -62,35 +57,20 @@ const EventsManagement = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Validate required fields first
-      if (!newEvent.name || !newEvent.domain || !newEvent.date || 
-          !newEvent.venue || !newEvent.capacity || !newEvent.description || 
-          !newEvent.image) {
-        alert('Please fill in all required fields');
-        return;
-      }
-
       const formData = new FormData();
       
-      // Convert capacity to number
-      const eventData = {
-        ...newEvent,
-        capacity: parseInt(newEvent.capacity),
-      };
-
-      // Append each field to formData
-      Object.keys(eventData).forEach(key => {
-        if (key === 'image' && eventData[key] instanceof File) {
-          formData.append('image', eventData[key]);
+      Object.keys(newEvent).forEach(key => {
+        if (key === 'image' && newEvent[key] instanceof File) {
+          formData.append('image', newEvent[key]);
         } else {
-          formData.append(key, eventData[key]);
+          formData.append(key, newEvent[key]);
         }
       });
 
-      const response = await fetch('http://localhost:3000/api/events', {
+      const response = await fetch(`${API_URL}/api/events`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}` // Add auth token
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
         body: formData,
       });
@@ -101,8 +81,7 @@ const EventsManagement = () => {
       }
 
       const data = await response.json();
-      console.log('Event created:', data);
-
+      setEvents(prev => [...prev, data.event]);
       // Reset form
       setNewEvent({
         name: '',
@@ -116,15 +95,9 @@ const EventsManagement = () => {
       });
       setImagePreview(null);
       
-      // Refresh events list
-      fetchEvents();
-      
-      // Show success message
-      alert('Event created successfully!');
-
     } catch (error) {
       console.error('Error creating event:', error);
-      alert(error.message || 'Failed to create event');
+      alert(error.message);
     }
   };
 

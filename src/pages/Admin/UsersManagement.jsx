@@ -30,13 +30,25 @@ const UsersManagement = () => {
 
   const fetchRegistrations = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/registration/all');
+      setLoading(true);
+      const response = await fetch(`${API_URL}/api/registration/all`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Accept': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch registrations');
+      }
+
       const data = await response.json();
-      setRegistrations(data);
-      setFilteredRegistrations(data);
-      setLoading(false);
+      setRegistrations(Array.isArray(data) ? data : []);
+      setFilteredRegistrations(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching registrations:', error);
+      alert('Error loading registrations. Please try again.');
+    } finally {
       setLoading(false);
     }
   };

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 const EventRegisterForm = () => {
   const { eventId } = useParams();
@@ -30,7 +31,7 @@ const EventRegisterForm = () => {
 
   const fetchEventDetails = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/events/${eventId}`);
+      const response = await fetch(`${API_URL}/api/events/${eventId}`);
       if (!response.ok) {
         throw new Error('Event not found');
       }
@@ -60,9 +61,12 @@ const EventRegisterForm = () => {
         return;
       }
 
-      const res = await fetch('http://localhost:3000/api/registration/register', {
+      const res = await fetch(`${API_URL}/api/registration/register`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         body: JSON.stringify({
           userName: formData.userName,
           userEmail: formData.userEmail,
