@@ -52,27 +52,32 @@ if (!fs.existsSync(uploadDir)) {
 // Set proper permissions
 fs.chmodSync(uploadDir, '755');
 
-// Serve static files
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// API Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/events', eventRoutes);
-app.use('/api/registration', eventRegistrationRoutes);
-app.use('/api/contact', contactRoutes);
-
-// Serve frontend in production
+// Update static file serving configuration
 if (process.env.NODE_ENV === 'production') {
-  const clientBuildPath = path.join(__dirname, '../frontend/dist');
-  app.use(express.static(clientBuildPath));
+  // Serve static files from uploads directory
+  app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
   
-  // Handle React routing, return all requests to React app
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(clientBuildPath, 'index.html'));
+  // API Routes should come before the catch-all route
+  app.use('/api/auth', authRoutes);
+  app.use('/api/events', eventRoutes);
+  app.use('/api/registration', eventRegistrationRoutes);
+  app.use('/api/contact', contactRoutes);
+
+  // Remove frontend serving since it's deployed separately
+  app.get('/', (req, res) => {
+    res.json({ message: 'UniConnect API is running' });
   });
 } else {
+  app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+  
+  // API Routes
+  app.use('/api/auth', authRoutes);
+  app.use('/api/events', eventRoutes);
+  app.use('/api/registration', eventRegistrationRoutes);
+  app.use('/api/contact', contactRoutes);
+
   app.get('/', (req, res) => {
-    res.send('API is running');
+    res.json({ message: 'UniConnect API is running in development mode' });
   });
 }
 
