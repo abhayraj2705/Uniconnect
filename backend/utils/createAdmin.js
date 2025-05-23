@@ -7,12 +7,17 @@ dotenv.config();
 
 const createAdmin = async () => {
   try {
-    // Connect to MongoDB
+    // Connect to MongoDB Atlas
     await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      serverApi: {
+        version: '1',
+        strict: true,
+        deprecationErrors: true,
+      }
     });
-    console.log('Connected to MongoDB');
+    console.log('Connected to MongoDB Atlas');
 
     // Check if admin already exists
     const adminExists = await User.findOne({ email: 'admin@uniconnect.com' });
@@ -34,9 +39,8 @@ const createAdmin = async () => {
   } catch (error) {
     console.error('Error creating admin:', error);
   } finally {
-    // Close the MongoDB connection
     await mongoose.connection.close();
-    console.log('MongoDB connection closed');
+    console.log('MongoDB Atlas connection closed');
   }
 };
 

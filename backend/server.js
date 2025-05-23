@@ -40,15 +40,25 @@ const upload = multer({ storage: storage });
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:5173',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  origin: process.env.NODE_ENV === 'production' 
+    ? 'https://your-frontend-domain.onrender.com'
+    : 'http://localhost:5173',
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 
 // Serve static files with absolute path
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Serve static files for production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../frontend/dist')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+  });
+}
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -60,8 +70,14 @@ app.use('/api/contact', contactRoutes);
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-}).then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
+  serverApi: {
+    version: '1',
+    strict: true,
+    deprecationErrors: true,
+  }
+})
+.then(() => console.log('MongoDB Atlas connected successfully'))
+.catch(err => console.error('MongoDB connection error:', err));
 
 // Basic test route
 app.get('/', (req, res) => {
