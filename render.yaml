@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: uniconnect-backend
+    env: node
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    disk:
+      name: uploads
+      mountPath: /opt/render/project/src/backend/uploads
+      sizeGB: 1
+    staticPublish:
+      - source: backend/uploads
+        destination: /uploads
+
+  - type: static
+    name: uniconnect-frontend
+    buildCommand: |
+      cd frontend && 
+      npm install && 
+      cp -r public/assets dist/ &&
+      npm run build
+    publishDir: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://uniconnect-backend-zd5n.onrender.com

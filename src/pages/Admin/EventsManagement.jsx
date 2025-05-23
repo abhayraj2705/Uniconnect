@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import API_URL from '../../config/api';
 
 const EventsManagement = () => {
   const [events, setEvents] = useState([]); // Initialize as empty array
@@ -282,6 +283,11 @@ const EventsManagement = () => {
                   Delete
                 </button>
               </div>
+              <img 
+                src={`${API_URL}${event.image}`} 
+                alt={event.name}
+                className="h-32 w-32 object-cover rounded"
+              />
             </div>
           ))}
         </div>

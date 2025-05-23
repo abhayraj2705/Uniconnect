@@ -1,32 +1,33 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import API_URL from '../config/api';
 
 const About = () => {
   const teamMembers = [
     {
       name: "Abhayraj B",
       role: "Founder",
-      image: "./src/assets/avtar.jpg"
+      image: "/assets/avtar.jpg"
     },
     {
       name: "Ameersohiel Momin",
       role: "Founder",
-      image: "./src/assets/avtar.jpg"
+      image: "/assets/avtar.jpg"
     },
     {
       name: "Hrishikesh Jhamble",
       role: "Founder",
-      image: "./src/assets/avtar.jpg"
+      image: "/assets/avtar.jpg"
     },
     {
       name: "Avneet Bhatt",
       role: "Founder",
-      image: "./src/assets/avtar.jpg"
+      image: "/assets/avtar.jpg"
     },
     {
       name: "Prof. Amit Uttrakar Sir",
       role: "Mentor",
-      image: "./src/assets/avtar.jpg"
+      image: "/assets/avtar.jpg"
     }
   ];
 
@@ -133,9 +134,9 @@ const About = () => {
                     >
                       <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full opacity-75 group-hover:opacity-100 blur transition duration-300"></div>
                       <img 
-                        src={member.image}
+                        src={`${API_URL}/uploads/${member.image}`}
                         alt={member.name}
-                        className="relative w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-white"
+                        className="relative w-32 h-32 rounded-full mx-auto mb-4 object-cover"
                       />
                     </motion.div>
                   </div>

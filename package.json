@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run prepare-assets && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "npm run build && cp -r dist/* backend/public",
+    "prepare-assets": "mkdir -p public/assets && cp -r src/assets/* public/assets/"
   },
   "dependencies": {
     "express": "^5.1.0",

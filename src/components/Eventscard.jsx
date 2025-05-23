@@ -81,7 +81,7 @@ const Eventscard = () => {
           >
             <img 
               className="w-24 h-24 rounded-full object-cover" 
-              src={`http://localhost:3000${event.image}`} 
+              src={`https://uniconnect-backend-zd5n.onrender.com${event.image}`} 
               alt={event.name}
               onError={(e) => {
                 e.target.src = '/src/assets/default-event.png';
