@@ -7,7 +7,15 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: CORS_ORIGIN
+      - key: MONGO_URI
+        value: mongodb+srv://atharvap0369:feBgFMvtbSFUE2ty@cluster0.8czbvzr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      - key: JWT_SECRET
+        value: abhatyrahagc
+      - key: EMAIL_USER
+        value: abhayraj27052005@gmail.com
+      - key: EMAIL_APP_PASSWORD
+        value: eiwx enkn vnlb mjmj
+      - key: FRONTEND_URL
         value: https://uniconnect-qs2s.onrender.com
     headers:
       - path: /*

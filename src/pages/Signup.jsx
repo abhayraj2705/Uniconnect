@@ -80,8 +80,9 @@ const Signup = () => {
           placeholder="Create Password"
           value={formData.password}
           onChange={handleChange}
-          className="w-full mb-6 p-2 border border-gray-300 rounded"
+          className="w-full mb-4 p-2 border border-gray-300 rounded"
           required
+          autoComplete="new-password"
         />
 
         <button 
