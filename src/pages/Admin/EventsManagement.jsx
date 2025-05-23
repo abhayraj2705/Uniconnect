@@ -104,10 +104,12 @@ const EventsManagement = () => {
   const handleDelete = async (eventId) => {
     if (window.confirm('Are you sure you want to delete this event?')) {
       try {
-        const response = await fetch(`http://localhost:3000/api/events/${eventId}`, {
+        const response = await fetch(`${API_URL}/api/events/${eventId}`, {
           method: 'DELETE',
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}` // Add auth token
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
           }
         });
 
@@ -119,6 +121,7 @@ const EventsManagement = () => {
         // Remove the event from state
         setEvents(events.filter(event => event._id !== eventId));
         alert('Event deleted successfully');
+        
       } catch (error) {
         console.error('Error deleting event:', error);
         if (error.message.includes('401')) {
