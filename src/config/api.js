@@ -1,5 +1,2 @@
-const API_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://uniconnect-backend-zd5n.onrender.com'
-  : 'http://localhost:3000';
-
+const API_URL = 'https://uniconnect-backend-zd5n.onrender.com';
 export default API_URL;

@@ -24,7 +24,7 @@ const EventsManagement = () => {
   const fetchEvents = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:3000/api/events', {
+      const response = await fetch(`${API_URL}/api/events`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
