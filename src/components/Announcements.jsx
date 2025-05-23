@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import API_URL from '../config/api';
 
 const Announcements = () => {
   return (
@@ -25,7 +26,7 @@ const Announcements = () => {
           >
             <div className="relative">
               <img 
-                src="./src/assets/Adevnture.jpg" 
+                src={`${API_URL}/uploads/Adevnture.jpg`}
                 alt="Adventure Club" 
                 className="w-full h-64 object-cover"
               />
@@ -65,7 +66,7 @@ const Announcements = () => {
           >
             <div className="relative">
               <img 
-                src="./src/assets/aces.png" 
+                src="/assets/aces.png" 
                 alt="ACES" 
                 className="w-full h-64 object-cover"
               />

@@ -5,28 +5,23 @@ const About = () => {
   const teamMembers = [
     {
       name: "Abhayraj B",
-      role: "Founder",
-      image: "./src/assets/avtar.jpg"
+      role: "Founder"
     },
     {
       name: "Ameersohiel Momin",
-      role: "Founder",
-      image: "./src/assets/avtar.jpg"
+      role: "Founder"
     },
     {
       name: "Hrishikesh Jhamble",
-      role: "Founder",
-      image: "./src/assets/avtar.jpg"
+      role: "Founder"
     },
     {
       name: "Avneet Bhatt",
-      role: "Founder",
-      image: "./src/assets/avtar.jpg"
+      role: "Founder"
     },
     {
       name: "Prof. Amit Uttrakar Sir",
-      role: "Mentor",
-      image: "./src/assets/avtar.jpg"
+      role: "Mentor"
     }
   ];
 
@@ -120,10 +115,6 @@ const About = () => {
                 <motion.div
                   key={member.name}
                   variants={item}
-                  whileHover={{ 
-                    scale: 1.05,
-                    transition: { duration: 0.2 }
-                  }}
                   className="text-center group"
                 >
                   <div className="relative inline-block">
@@ -133,9 +124,13 @@ const About = () => {
                     >
                       <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full opacity-75 group-hover:opacity-100 blur transition duration-300"></div>
                       <img 
-                        src={member.image}
+                        src="/assets/default-avatar.jpg"
                         alt={member.name}
-                        className="relative w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-white"
+                        className="relative w-32 h-32 rounded-full mx-auto mb-4 object-cover bg-gray-100"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = '/assets/fallback-image.jpg';
+                        }}
                       />
                     </motion.div>
                   </div>

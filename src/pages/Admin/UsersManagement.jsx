@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { jsPDF } from "jspdf";
 import autoTable from 'jspdf-autotable';
+import API_URL from '../../config/api';
 
 const UsersManagement = () => {
   const [registrations, setRegistrations] = useState([]);
@@ -30,13 +31,27 @@ const UsersManagement = () => {
 
   const fetchRegistrations = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/registration/all');
+      setLoading(true);
+      const token = localStorage.getItem('token');
+      
+      const response = await fetch(`${API_URL}/api/registration/all`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch registrations');
+      }
+
       const data = await response.json();
-      setRegistrations(data);
-      setFilteredRegistrations(data);
-      setLoading(false);
+      setRegistrations(Array.isArray(data) ? data : []);
+      setFilteredRegistrations(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching registrations:', error);
+      alert('Error loading registrations. Please try again.');
+    } finally {
       setLoading(false);
     }
   };

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -16,7 +17,7 @@ const LoginForm = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3000/api/auth/login', {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -44,7 +45,8 @@ const LoginForm = () => {
         navigate('/');
       }
     } catch (error) {
-      setError(error.message);
+      setError('Failed to connect to server');
+      console.error('Login error:', error);
     } finally {
       setLoading(false);
     }
@@ -117,6 +119,7 @@ const LoginForm = () => {
                 className="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full"
                 required
                 disabled={loading}
+                autoComplete="current-password"
               />
             </div>
 

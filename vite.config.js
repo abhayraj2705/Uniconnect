@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
   build: {
@@ -10,10 +9,14 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: process.env.VITE_API_URL || 'http://localhost:3000',
+        target: 'https://uniconnect-backend-zd5n.onrender.com',
         changeOrigin: true,
-        secure: false,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/api/, '/api')
       }
     }
+  },
+  define: {
+    'process.env.VITE_API_URL': JSON.stringify('https://uniconnect-backend-zd5n.onrender.com')
   }
 })

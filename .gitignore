@@ -12,6 +12,17 @@ dist
 dist-ssr
 *.local
 
+# Ignore uploads directory but not default assets
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Keep public assets
+!public/assets/
+public/assets/*
+!public/assets/default-event.png
+!public/assets/default-avatar.png
+!public/assets/fallback-image.png
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

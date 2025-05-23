@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import API_URL from '../config/api';
 
 const Eventscard = () => {
   const [events, setEvents] = useState([]);
@@ -23,7 +24,12 @@ const Eventscard = () => {
   const fetchEvents = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:3000/api/events');
+      const response = await fetch(`${API_URL}/api/events`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
       
       if (!response.ok) {
         throw new Error('Failed to fetch events');
@@ -81,10 +87,11 @@ const Eventscard = () => {
           >
             <img 
               className="w-24 h-24 rounded-full object-cover" 
-              src={`http://localhost:3000${event.image}`} 
+              src={event.image ? `${API_URL}${event.image}` : '/assets/default-event.jpg'} 
               alt={event.name}
               onError={(e) => {
-                e.target.src = '/src/assets/default-event.png';
+                e.target.onerror = null;
+                e.target.src = '/assets/default-event.jpg';
               }}
             />
             <h2 className="text-gray-700 group-hover:text-white text-lg font-medium mt-4">

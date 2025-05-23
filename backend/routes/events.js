@@ -20,7 +20,11 @@ const upload = multer({ storage: storage });
 router.get('/', async (req, res) => {
   try {
     const events = await Event.find().sort({ date: 1 });
-    res.json(events || []); // Ensure we always return an array
+    const eventsWithImages = events.map(event => ({
+      ...event.toObject(),
+      image: event.image // Keep the relative path
+    }));
+    res.json(eventsWithImages);
   } catch (error) {
     console.error('Error fetching events:', error);
     res.status(500).json({ message: error.message });
@@ -50,6 +54,8 @@ router.post('/', auth, upload.single('image'), async (req, res) => {
       return res.status(400).json({ message: 'Image is required' });
     }
 
+    const imagePath = `/uploads/${req.file.filename}`;
+
     const newEvent = new Event({
       name,
       domain,
@@ -58,13 +64,17 @@ router.post('/', auth, upload.single('image'), async (req, res) => {
       venue,
       capacity: parseInt(capacity),
       description,
-      image: `/uploads/${req.file.filename}`
+      image: imagePath // Store the relative path
     });
 
     const savedEvent = await newEvent.save();
+
     res.status(201).json({
       message: 'Event created successfully',
-      event: savedEvent
+      event: {
+        ...savedEvent.toObject(),
+        image: imagePath // Send back the relative path
+      }
     });
     
   } catch (error) {
