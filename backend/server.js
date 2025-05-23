@@ -35,22 +35,14 @@ const upload = multer({ storage: storage });
 // Middleware
 app.use(express.json());
 app.use(cors({
-  origin: [
-    'https://uniconnect-qs2s.onrender.com',
-    'https://uniconnect-backend-zd5n.onrender.com',
-    'http://localhost:5173'
-  ],
-  credentials: true
+  origin: process.env.NODE_ENV === 'production' 
+    ? 'https://your-frontend-domain.onrender.com'
+    : 'http://localhost:5173',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
-
-// Ensure uploads directory exists
-const uploadDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-// Set proper permissions
-fs.chmodSync(uploadDir, '755');
+app.use(express.json());
 
 // Serve static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -97,5 +89,7 @@ mongoose.connect(process.env.MONGO_URI, {
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+export default server;
 
 export default server;

@@ -8,8 +8,7 @@
     "build": "npm run prepare-assets && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy": "npm run build && cp -r dist/* backend/public",
-    "prepare-assets": "mkdir -p public/assets && cp -r src/assets/* public/assets/"
+    "deploy": "npm run build && cp -r dist/* backend/public"
   },
   "dependencies": {
     "express": "^5.1.0",
