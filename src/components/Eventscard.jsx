@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import API_URL from '../config/api';
 
 const Eventscard = () => {
   const [events, setEvents] = useState([]);
@@ -23,7 +24,12 @@ const Eventscard = () => {
   const fetchEvents = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:3000/api/events');
+      const response = await fetch(`${API_URL}/api/events`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
       
       if (!response.ok) {
         throw new Error('Failed to fetch events');

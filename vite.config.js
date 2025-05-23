@@ -9,11 +9,14 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: process.env.VITE_API_URL || 'http://localhost:3000',
+        target: 'https://uniconnect-backend-zd5n.onrender.com',
         changeOrigin: true,
         secure: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
+        rewrite: (path) => path.replace(/^\/api/, '/api')
       }
     }
+  },
+  define: {
+    'process.env.VITE_API_URL': JSON.stringify('https://uniconnect-backend-zd5n.onrender.com')
   }
 })

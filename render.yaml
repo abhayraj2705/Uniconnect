@@ -7,24 +7,18 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: PORT
-        value: 3000
-      - key: MONGO_URI
-        value: mongodb+srv://atharvap0369:feBgFMvtbSFUE2ty@cluster0.8czbvzr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-      - key: JWT_SECRET
-        value: abhatyrahagc
-      - key: EMAIL_USER
-        value: abhayraj27052005@gmail.com
-      - key: EMAIL_APP_PASSWORD
-        value: eiwx enkn vnlb mjmj
-      - key: FRONTEND_URL
-        value: https://uniconnect-qs2s.onrender.com
       - key: CORS_ORIGIN
         value: https://uniconnect-qs2s.onrender.com
     headers:
       - path: /*
         name: Access-Control-Allow-Origin
-        value: https://uniconnect-qs2s.onrender.com
+        value: "*"
+      - path: /*
+        name: Access-Control-Allow-Methods
+        value: "GET, POST, PUT, DELETE, OPTIONS"
+      - path: /*
+        name: Access-Control-Allow-Headers
+        value: "Origin, X-Requested-With, Content-Type, Accept, Authorization"
     disk:
       name: uploads
       mountPath: /opt/render/project/src/backend/uploads
