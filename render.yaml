@@ -16,8 +16,7 @@ services:
     name: uniconnect-frontend
     buildCommand: |
       cd frontend && 
-      npm install && 
-      cp -r public/assets dist/ &&
+      npm install &&
       npm run build
     publishDir: frontend/dist
     envVars:

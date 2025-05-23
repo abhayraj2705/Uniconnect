@@ -5,12 +5,7 @@ export default defineConfig({
   plugins: [react()],
   build: {
     outDir: 'dist',
-    assetsDir: 'assets',
-    rollupOptions: {
-      input: {
-        main: '/index.html'
-      }
-    }
+    assetsDir: 'assets'
   },
   server: {
     proxy: {
