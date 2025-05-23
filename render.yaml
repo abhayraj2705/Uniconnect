@@ -7,6 +7,8 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      - key: PORT
+        value: 3000
       - key: MONGO_URI
         value: mongodb+srv://atharvap0369:feBgFMvtbSFUE2ty@cluster0.8czbvzr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
       - key: JWT_SECRET
@@ -18,8 +20,8 @@ services:
 
   - type: static
     name: uniconnect-frontend
-    buildCommand: npm install && npm run build
-    publishDir: dist
-    env:
+    buildCommand: cd frontend && npm install && npm run build
+    publishDir: frontend/dist
+    envVars:
       - key: VITE_API_URL
         value: https://uniconnect-backend.onrender.com
