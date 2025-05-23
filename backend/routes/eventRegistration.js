@@ -1,5 +1,5 @@
 import express from 'express';
-import EventRegistration from '../models/Events.js';
+import EventRegistration from '../models/EventRegistration.js'; // Fix the import
 import Event from '../models/Event.js';
 import { sendEventRegistrationEmail } from '../utils/emailService.js';
 import auth from '../middleware/auth.js';
@@ -60,7 +60,14 @@ router.post('/register', async (req, res) => {
 // 📌 Get all registrations
 router.get('/all', auth, async (req, res) => {
   try {
-    const allRegistrations = await EventRegistration.find().sort({ createdAt: -1 });
+    const allRegistrations = await EventRegistration.find()
+      .sort({ createdAt: -1 })
+      .select('-__v');  // Exclude version key
+    
+    if (!allRegistrations) {
+      return res.status(404).json({ message: 'No registrations found' });
+    }
+    
     res.json(allRegistrations);
   } catch (err) {
     console.error('Error fetching registrations:', err);

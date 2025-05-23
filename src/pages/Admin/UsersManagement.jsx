@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { jsPDF } from "jspdf";
 import autoTable from 'jspdf-autotable';
+import API_URL from '../../config/api';
 
 const UsersManagement = () => {
   const [registrations, setRegistrations] = useState([]);
@@ -31,9 +32,11 @@ const UsersManagement = () => {
   const fetchRegistrations = async () => {
     try {
       setLoading(true);
+      const token = localStorage.getItem('token');
+      
       const response = await fetch(`${API_URL}/api/registration/all`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Authorization': `Bearer ${token}`,
           'Accept': 'application/json'
         }
       });

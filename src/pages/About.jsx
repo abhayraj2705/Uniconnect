@@ -1,33 +1,27 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import API_URL from '../config/api';
 
 const About = () => {
   const teamMembers = [
     {
       name: "Abhayraj B",
-      role: "Founder",
-      image: "/assets/avtar.jpg"
+      role: "Founder"
     },
     {
       name: "Ameersohiel Momin",
-      role: "Founder",
-      image: "/assets/avtar.jpg"
+      role: "Founder"
     },
     {
       name: "Hrishikesh Jhamble",
-      role: "Founder",
-      image: "/assets/avtar.jpg"
+      role: "Founder"
     },
     {
       name: "Avneet Bhatt",
-      role: "Founder",
-      image: "/assets/avtar.jpg"
+      role: "Founder"
     },
     {
       name: "Prof. Amit Uttrakar Sir",
-      role: "Mentor",
-      image: "/assets/avtar.jpg"
+      role: "Mentor"
     }
   ];
 
@@ -121,10 +115,6 @@ const About = () => {
                 <motion.div
                   key={member.name}
                   variants={item}
-                  whileHover={{ 
-                    scale: 1.05,
-                    transition: { duration: 0.2 }
-                  }}
                   className="text-center group"
                 >
                   <div className="relative inline-block">
@@ -134,9 +124,9 @@ const About = () => {
                     >
                       <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full opacity-75 group-hover:opacity-100 blur transition duration-300"></div>
                       <img 
-                        src={`${API_URL}/uploads/${member.image}`}
+                        src="/assets/default-avatar.jpg" // Using the same default avatar for all
                         alt={member.name}
-                        className="relative w-32 h-32 rounded-full mx-auto mb-4 object-cover"
+                        className="relative w-32 h-32 rounded-full mx-auto mb-4 object-cover bg-gray-100"
                       />
                     </motion.div>
                   </div>
